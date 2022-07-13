@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "414842936124",
+    "firebase_url": "https://censeapp-f130e-default-rtdb.firebaseio.com",
+    "project_id": "censeapp-f130e",
+    "storage_bucket": "censeapp-f130e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414842936124:android:f81d2ab20b7d9a99fe9c39",
+        "android_client_info": {
+          "package_name": "com.app.cense"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414842936124-18gcbt5frrcccfiuf17m10i9r22t8gh0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvrATVb6hkdwGlwddmL9SafOURdUql728"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414842936124-18gcbt5frrcccfiuf17m10i9r22t8gh0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.parent.TimeoutSelectActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="110sp"
+        android:layout_alignParentStart="true"
+
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/header" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/submitButtonTimeout"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="@string/hint_timeout_select"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <Spinner
+            android:id="@+id/timeoutSpinnerTimeoutSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/spinner_background"
+            android:outlineAmbientShadowColor="@color/buttons"
+            android:outlineSpotShadowColor="@color/buttons"
+            android:scrollbarSize="100dp" />
+
+        <EditText
+            android:id="@+id/answers_to_unlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="25sp"
+            android:layout_marginRight="40dp"
+            android:hint="Number of answers to unlock"
+            android:inputType="number"
+            android:textSize="18dp" />
+
+
+        <EditText
+            android:id="@+id/classTargetSelectActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="25sp"
+            android:layout_marginRight="40dp"
+            android:hint="Class"
+            android:inputType="number"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/difficultyTargetSelectActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="25sp"
+            android:layout_marginRight="40dp"
+            android:hint="Target tag"
+            android:inputType="text"
+            android:textSize="18dp" />
+
+        <Spinner
+            android:id="@+id/CourseSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/spinner_background"
+            android:outlineAmbientShadowColor="@color/buttons"
+            android:outlineSpotShadowColor="@color/buttons"
+            android:scrollbarSize="100dp" />
+
+        <LinearLayout
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/math_cb"
+                android:button="@null"
+                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_width="wrap_content"
+                android:checked="true"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeCourse"
+                android:text="Match" />
+
+            <CheckBox
+                android:id="@+id/science_cb"
+                android:button="@null"
+                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeCourse"
+                android:text="Science" />
+
+            <CheckBox
+                android:id="@+id/eng_cb"
+                android:button="@null"
+                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeCourse"
+                android:text="English" />
+
+            <CheckBox
+                android:id="@+id/randomcb"
+                android:button="@null"
+                android:drawableBottom="?android:attr/listChoiceIndicatorMultiple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeCourse"
+                android:text="Random" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/submitButtonTimeout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:onClick="changeTimeOut"
+        android:src="@drawable/button"
+        app:layout_constraintBottom_toTopOf="@+id/timeout_footer_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:gravity="center"
+        android:text="@string/submit"
+        android:textSize="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/submitButtonTimeout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/submitButtonTimeout" />
+
+    <TextView
+        android:id="@+id/timeout_footer_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/timeout_description"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

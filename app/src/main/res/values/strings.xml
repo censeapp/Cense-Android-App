@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Cense</string>
+    <string name="app_description">Need screen pinning</string>
+    <string name="sendCode">Send code</string>
+    <string name="auth">Parent login</string>
+    <string name="submit">Submit</string>
+    <string name="hint_timeout_select">Set the screen time limit</string>
+    <string name="timeout_description">This allows you to limit the time your children spend in their phone without interruption. After the limit is reached, the app will suggest your child to study a bit to get more screen time.</string>
+    <string name="help_me_with_that">Help me with that</string>
+</resources>

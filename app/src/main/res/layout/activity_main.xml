@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="110dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/header" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/childMainActivity"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:foreground="@drawable/my_selector"
+        android:clickable="true"
+        android:onClick="change"
+        android:src="@drawable/child"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start learning"
+        android:layout_gravity="center"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textSize="20dp"
+        android:textColor="@color/black"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/parentMainActivity"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/parent"
+        android:layout_marginTop="60dp"
+        android:clickable="true"
+        android:onClick="change"
+        android:foreground="@drawable/my_selector"
+        android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log in as a parent."
+        android:layout_gravity="center"
+        android:textSize="15dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textColor="@color/black"/>
+</LinearLayout>

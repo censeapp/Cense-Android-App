@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Atyuk/Desktop/24.06/Cense/Cense/app/src/main/res/layout/activity_achieve_unlock.xml" value="0.1774891774891775" />
+        <entry key="..\:/Users/Atyuk/Desktop/24.06/Cense/Cense/app/src/main/res/layout/activity_done.xml" value="0.33" />
+        <entry key="..\:/Users/Atyuk/Desktop/24.06/Cense/Cense/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Atyuk/Desktop/24.06/Cense/Cense/app/src/main/res/layout/activity_parent_auth.xml" value="0.21510416666666668" />
+        <entry key="..\:/Users/Atyuk/Desktop/24.06/Cense/Cense/app/src/main/res/layout/activity_test.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Atyuk/Desktop/24.06/Cense/Cense/app/src/main/res/layout/activity_timeout_select.xml" value="0.33967391304347827" />
+        <entry key="..\:/Users/Atyuk/Desktop/Cense/Cense/app/src/main/res/layout/activity_lock_screen.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/Atyuk/Desktop/Cense/Cense/app/src/main/res/layout/activity_main.xml" value="0.3183876811594203" />
+        <entry key="..\:/Users/Atyuk/Desktop/Cense/Cense/app/src/main/res/layout/activity_parent_auth.xml" value="0.2916666666666667" />
+        <entry key="..\:/Users/Atyuk/Desktop/Cense/Cense/app/src/main/res/layout/activity_test.xml" value="0.33710407239819007" />
+        <entry key="..\:/Users/Atyuk/Desktop/Cense/Cense/app/src/main/res/layout/activity_timeout_select.xml" value="0.2916666666666667" />
+        <entry key="..\:/Users/Atyuk/Desktop/monkey ass/Cense (2)/Cense/app/src/main/res/layout/activity_achieve_unlock.xml" value="0.1" />
+        <entry key="..\:/Users/Atyuk/Desktop/project cense/Cense Main/Cense/app/src/main/res/layout/activity_lock_screen.xml" value="0.3463541666666667" />
+        <entry key="..\:/Users/Atyuk/Desktop/project cense/Cense Main/Cense/app/src/main/res/layout/activity_parent_auth.xml" value="0.35104166666666664" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

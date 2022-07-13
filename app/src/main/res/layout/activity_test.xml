@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.testActivity.TestActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="110sp"
+        android:layout_alignParentStart="true"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/header" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/testContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/textProgressTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="1/3"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/testContainer" />
+
+        <ProgressBar
+            android:id="@+id/progressBarTest"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="68sp"
+            android:layout_marginRight="68sp"
+            android:progress="33"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/testContainer" />
+
+        <TextView
+            android:id="@+id/textThemeTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Science"
+
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBarTest" />
+
+        <TextView
+            android:id="@+id/questionBodyTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textThemeTest"
+            android:layout_marginLeft="6sp"
+            android:layout_marginRight="2sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="The planet closest to the sun"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textThemeTest" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/A"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginTop="12sp"
+            android:tag="A"
+            android:contentDescription="@string/app_description"
+            android:onClick="answer"
+            android:src="@drawable/answer_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/questionBodyTest" />
+
+        <TextView
+            android:id="@+id/aAnswerTextTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="110sp"
+            android:layout_marginRight="70sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Mercury"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/A"
+            app:layout_constraintEnd_toEndOf="@+id/A"
+            app:layout_constraintStart_toStartOf="@+id/A"
+            app:layout_constraintTop_toTopOf="@+id/A" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="47sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="A"
+            android:textSize="26sp"
+            app:layout_constraintBottom_toBottomOf="@+id/A"
+            app:layout_constraintStart_toStartOf="@+id/A"
+            app:layout_constraintTop_toTopOf="@+id/A" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/B"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginTop="12sp"
+            android:tag="B"
+            android:contentDescription="@string/app_description"
+            android:onClick="answer"
+            android:src="@drawable/answer_button"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/A" />
+
+        <TextView
+            android:id="@+id/bAnswerTextTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="110sp"
+            android:layout_marginRight="70sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Venus"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/B"
+            app:layout_constraintEnd_toEndOf="@+id/B"
+            app:layout_constraintStart_toStartOf="@+id/B"
+            app:layout_constraintTop_toTopOf="@+id/B" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="47sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="B"
+            android:textSize="26sp"
+            app:layout_constraintBottom_toBottomOf="@+id/B"
+            app:layout_constraintStart_toStartOf="@+id/B"
+            app:layout_constraintTop_toTopOf="@+id/B" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/C"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginTop="12sp"
+            android:tag="C"
+            android:contentDescription="@string/app_description"
+            android:onClick="answer"
+            android:src="@drawable/answer_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/B" />
+
+        <TextView
+            android:id="@+id/cAnswerTextTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="110sp"
+            android:layout_marginRight="70sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Uranus"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/C"
+            app:layout_constraintEnd_toEndOf="@+id/C"
+            app:layout_constraintStart_toStartOf="@+id/C"
+            app:layout_constraintTop_toTopOf="@+id/C" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="47sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="C"
+            android:textSize="26sp"
+            app:layout_constraintBottom_toBottomOf="@+id/C"
+            app:layout_constraintStart_toStartOf="@+id/C"
+            app:layout_constraintTop_toTopOf="@+id/C" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/D"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_marginTop="12sp"
+            android:tag="D"
+            android:contentDescription="@string/app_description"
+            android:onClick="answer"
+            android:src="@drawable/answer_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/C" />
+
+        <TextView
+            android:id="@+id/dAnswerTextTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="110sp"
+            android:layout_marginRight="70sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Pluto"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/D"
+            app:layout_constraintEnd_toEndOf="@+id/D"
+            app:layout_constraintStart_toStartOf="@+id/D"
+            app:layout_constraintTop_toTopOf="@+id/D" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="47sp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="D"
+            android:textSize="26sp"
+            app:layout_constraintBottom_toBottomOf="@+id/D"
+            app:layout_constraintStart_toStartOf="@+id/D"
+            app:layout_constraintTop_toTopOf="@+id/D" />
+
+        <ImageView
+            android:id="@+id/helpButtonTest"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:contentDescription="@string/app_description"
+            android:minHeight="38dp"
+            android:onClick="answer"
+            android:src="@drawable/help_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/help_me_with_that"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="@+id/helpButtonTest"
+            app:layout_constraintEnd_toEndOf="@+id/helpButtonTest"
+            app:layout_constraintStart_toStartOf="@+id/helpButtonTest"
+            app:layout_constraintTop_toTopOf="@+id/helpButtonTest" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/hint_container"
+        android:paddingHorizontal="100dp"
+        android:paddingTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0">
+        <TextView
+            android:id="@+id/hint_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/hint_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hint_label" />
+
+        <ImageView
+            android:id="@+id/see_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:contentDescription="@string/app_description"
+            android:minHeight="38dp"
+            android:foreground="@drawable/my_selector"
+            android:onClick="hideHintCL"
+            android:src="@drawable/help_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I get it"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="@+id/see_btn"
+            app:layout_constraintEnd_toEndOf="@+id/see_btn"
+            app:layout_constraintStart_toStartOf="@+id/see_btn"
+            app:layout_constraintTop_toTopOf="@+id/see_btn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
