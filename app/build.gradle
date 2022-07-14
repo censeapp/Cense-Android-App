@@ -2,12 +2,17 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'kotlin-android'
 }
 apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 32
     buildToolsVersion "30.0.3"
+
+    packagingOptions {
+        excludes.add("META-INF/*")
+    }
 
     defaultConfig {
         applicationId "com.app.cense"
@@ -34,6 +39,10 @@ android {
 
 dependencies {
 
+    implementation("xerces:xercesImpl:2.8.0")
+    implementation group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api-parent', version: '3.0.1', ext: 'pom'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1'
+    implementation 'ru.yoomoney.sdk.kassa.payments:yookassa-android-sdk:6.5.0'
 
     implementation 'com.yandex.android:mobmetricalib:5.0.0'
 

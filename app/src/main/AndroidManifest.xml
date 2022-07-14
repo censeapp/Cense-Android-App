@@ -17,6 +17,9 @@
     <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <meta-data
+        android:name="com.google.android.gms.wallet.api.enabled"
+        tools:node="remove" />
 
     <application
         android:name=".App"
@@ -28,6 +31,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cense">
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            tools:node="remove" />
         <activity
             android:name=".ui.done.DoneActivity"
             android:exported="false" />
@@ -61,6 +68,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
+            <meta-data
+                android:name="com.google.android.gms.wallet.api.enabled"
+                tools:node="remove" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
