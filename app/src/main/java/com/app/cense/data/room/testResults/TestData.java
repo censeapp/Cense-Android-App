@@ -6,21 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestData {
+    String startDate;
+
     List<Long> millsTimes = new ArrayList<>();//currentMills
     List<Integer>secTimes = new ArrayList<>();//время на ответ
     int trueAnswers;
     int falseAnswers;
 
-    public TestData(List<Long> times, int trueAnswers, int falseAnswers){
-        System.out.println("times = "+times.toString()+" true = "+trueAnswers+" false = "+falseAnswers);
+    public String date;
+    public int averageTime;
+    public int rightAnswers;
 
+    public TestData(String startDate, List<Long> times, int trueAnswers, int falseAnswers){
+        System.out.println("times = "+times.toString()+" true = "+trueAnswers+" false = "+falseAnswers);
+        this.startDate = startDate;
         this.millsTimes = times;
         this.trueAnswers = trueAnswers;
         this.falseAnswers = falseAnswers;
         setSecAnswers();
         setAverageTime();
         setRightAnswers();
-        date = App.getDate("yyyy-MM-dd hh:mm:ss");
+        date = startDate;
         System.out.println("date = "+date);
         System.out.println("secTimes.size = "+secTimes.size());
         System.out.println("rightAnswers = "+rightAnswers);
@@ -51,7 +57,5 @@ public class TestData {
         rightAnswers = 100*trueAnswers/sum;
     }
 
-    public String date;
-    public int averageTime;
-    public int rightAnswers;
+
 }

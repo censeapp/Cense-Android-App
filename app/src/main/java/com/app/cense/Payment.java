@@ -4,7 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
 import android.widget.Toast;
+
+import androidx.fragment.app.FragmentManager;
+
+import com.app.cense.data.appMetrica.Event;
+import com.app.cense.ui.browser.WebviewFragment;
+import com.app.cense.ui.parent.TimeoutSelectActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,14 +25,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import java.sql.Time;
 import java.util.Scanner;
 
 import jakarta.xml.bind.DatatypeConverter;
+import ru.yoomoney.sdk.kassa.payments.Checkout;
+import ru.yoomoney.sdk.kassa.payments.checkoutParameters.PaymentMethodType;
 
 public class Payment {
-    public static void sendToken(MainActivity context, String token, BigDecimal sum, String description, String currency) {
+    public static void sendToken(TimeoutSelectActivity context, String token, BigDecimal sum, String description, String currency) {
         try {
-
             URL url = new URL("https://api.yookassa.ru/v3/payments");
             HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
             httpConn.setRequestMethod("POST");
@@ -37,7 +46,7 @@ public class Payment {
             httpConn.setDoOutput(true);
             OutputStreamWriter writer = new OutputStreamWriter(httpConn.getOutputStream());
             writer.write("{\"payment_token\": \"" + token + "\",\"amount\": {\"value\": \"" + sum.toString() + "\",\"currency\": \"" + currency + "\"},\"capture\": true,\"description\": \"" + description + "\"}");
-            writer.flush();
+            writer.flush();//отправить запрос на проведение операции с использованием ключа апи, id магазина, токена и данных об операции.
             writer.close();
             httpConn.getOutputStream().close();
             InputStream responseStream = httpConn.getResponseCode() / 100 == 2
@@ -47,28 +56,39 @@ public class Payment {
             String response = s.hasNext() ? s.next() : "";
             System.out.println(response);
             System.out.println("response code " + httpConn.getResponseCode());
-
-            responseParse(response, context);
-
+            responseParse(response, context);//обработать полученный ответ
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void responseParse(String response, Activity context) throws JSONException {
+    public static void responseParse(String response, TimeoutSelectActivity context) throws JSONException {
         JSONObject jsonResponse = new JSONObject(response);
         context.runOnUiThread(() -> {
             try {
                 if (!jsonResponse.isNull("status")) {
                     App.getInstance().getSharedPreferences().addTryPurchase(jsonResponse.getString("id"));//фиксируем попытку покупки
-                    if (jsonResponse.get("status").equals("succeeded"))
+
+                    if (jsonResponse.get("status").equals("succeeded")) {
                         Toast.makeText(context, "Успешно", Toast.LENGTH_SHORT).show();
+                        System.out.println("услешно " + jsonResponse);
+                        App.getInstance().getSharedPreferences().savePurchaseStatusTrue(jsonResponse.getString("description"));
+                        context.progressBar.setVisibility(View.GONE);
+
+                        Event.succefulPurchase(App.getDate(App.DATE_FORMAT), App.purchaseTry);
+                        App.getInstance().getFirebaseController().writeBuy(App.getInstance().getSharedPreferences().getLogin(), App.purchaseTry);
+                        App.getInstance().getSharedPreferences().savePurchaseStatusTrue(App.purchaseTry);
+                        App.purchaseTry = "";
+                    }
+
                     if (jsonResponse.get("status").equals("canceled"))
-                        Toast.makeText(context, "Ошибка, Недостаточно средств", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Отмена", Toast.LENGTH_SHORT).show();
                     if (jsonResponse.get("status").equals("pending")) {
-                        Toast.makeText(context, "3DSecurity перенаправлен в браузер", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "3DSecurity", Toast.LENGTH_SHORT).show();
                         confirmationParse(jsonResponse, context);//Запустить проверку на проведение 3DSecurity
                     }
+                } else {
+                    Toast.makeText(context, "Ошибка платежа", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -76,28 +96,31 @@ public class Payment {
         });
     }
 
-    private static void confirmationParse(JSONObject jsonResponse, Context context) {
+    private static void confirmationParse(JSONObject jsonResponse, TimeoutSelectActivity context) {
         if (!jsonResponse.isNull("confirmation")) {
             try {
                 JSONObject conf = jsonResponse.getJSONObject("confirmation");
                 if (!conf.isNull("confirmation_url")) {
-                    //открыть ссылку с подтверждением в браузере
-                    startValidation(conf.getString("confirmation_url"), context);
+
+                    App.three_d_secure_url = conf.getString("confirmation_url");
+
+                    context.startValidation(context);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
-    private static void startValidation(String url, Context context) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.valueOf(url)));
-        context.startActivity(browserIntent);
+    static void start3DSecure(TimeoutSelectActivity context, String url) {
+        Intent intent = Checkout.createConfirmationIntent(context, url, PaymentMethodType.BANK_CARD);
+        context.startActivityForResult(intent, 1);
     }
 
-    public static void getPurchaseInfo(){
+
+
+    public static String getPurchaseInfo(String id){
         try {
-            URL url = new URL("https://api.yookassa.ru/v3/payments/2a622ee0-000f-5000-8000-17248602eddc");
+            URL url = new URL("https://api.yookassa.ru/v3/payments/"+id);
             HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
             httpConn.setRequestMethod("GET");
 
@@ -111,8 +134,10 @@ public class Payment {
             Scanner s = new Scanner(responseStream).useDelimiter("\\A");
             String response = s.hasNext() ? s.next() : "";
             System.out.println(response);
+            return response;
         }catch (Exception e){
             e.printStackTrace();
         }
+        return "error";
     }
 }

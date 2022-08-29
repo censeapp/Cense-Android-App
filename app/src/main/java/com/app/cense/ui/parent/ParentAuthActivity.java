@@ -10,7 +10,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.app.cense.App;
+import com.app.cense.PurchasedChecker;
 import com.app.cense.R;
+import com.app.cense.TimeTracker;
 import com.app.cense.data.SharedPreferences.AppPreferences;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class ParentAuthActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private TimeTracker timeTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +31,8 @@ public class ParentAuthActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         checkLogin();
+        timeTracker = new TimeTracker();
+        timeTracker.classname = "auth";
     }
 
     private void checkLogin(){
@@ -34,6 +41,8 @@ public class ParentAuthActivity extends AppCompatActivity {
         } else {
             AppPreferences sp = new AppPreferences(this);
             sp.saveLogin(mFirebaseUser.getEmail());
+            System.out.println("login fir1 "+mFirebaseUser.getEmail());
+            App.getInstance().getFirebaseController().readBuy(App.getInstance().getSharedPreferences().getLogin(), TimeoutSelectActivity.BUY_1_DESCRIPTION);
             TimeoutSelectActivity.start(this);
             finish();
         }
@@ -56,8 +65,17 @@ public class ParentAuthActivity extends AppCompatActivity {
     private void handleSignInResponse(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             System.out.println("RESULT_OK");
-            TimeoutSelectActivity.start(this);
-            finish();
+            checkLogin();
+            mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            if (mFirebaseUser!=null) {
+
+                System.out.println("login fir1 " + mFirebaseUser.getEmail());
+                App.getInstance().getSharedPreferences().saveLogin(mFirebaseUser.getEmail());
+                App.getInstance().getFirebaseController().readBuy(App.getInstance().getSharedPreferences().getLogin(), TimeoutSelectActivity.BUY_1_DESCRIPTION);
+                TimeoutSelectActivity.start(this);
+                finish();
+
+            } else System.out.println("опять ошибка ебаная");
         }
 
         if (resultCode == RESULT_CANCELED) {
@@ -70,6 +88,7 @@ public class ParentAuthActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        timeTracker.onResumeTime = System.currentTimeMillis();
     }
 
     private static final String GOOGLE_TOS_URL = "https://www.google.com/policies/terms/";
@@ -83,6 +102,13 @@ public class ParentAuthActivity extends AppCompatActivity {
                         .setIsSmartLockEnabled(false)
                         .build(),
                 RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timeTracker.onPauseTime = System.currentTimeMillis();
+        timeTracker.saveTime();
     }
 
     public static void start(Context context) {
@@ -99,5 +125,6 @@ public class ParentAuthActivity extends AppCompatActivity {
             default:
         }
     }
+
 
 }

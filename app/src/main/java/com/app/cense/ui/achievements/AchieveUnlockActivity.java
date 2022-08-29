@@ -23,6 +23,9 @@ import android.view.View;
 import com.app.cense.App;
 import com.app.cense.LockScreenActivity;
 import com.app.cense.R;
+import com.app.cense.TimeTracker;
+import com.app.cense.data.SharedPreferences.AppPreferences;
+import com.app.cense.data.appMetrica.Event;
 import com.yandex.metrica.YandexMetrica;
 
 import java.io.File;
@@ -32,16 +35,23 @@ import java.util.List;
 
 public class AchieveUnlockActivity extends AppCompatActivity {
 
+    private TimeTracker timeTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achieve_unlock);
         App.getInstance().isStoragePermissionGranted(this);
+        timeTracker = new TimeTracker();
+        timeTracker.classname = "achieve";
+
     }
 
     public static void start(Context context, String id) {
         Intent intent = new Intent(context, AchieveUnlockActivity.class);
         context.startActivity(intent);
+
+        Event.awardedAchievement("Yong Tesla");
     }
 
 
@@ -57,12 +67,20 @@ public class AchieveUnlockActivity extends AppCompatActivity {
                 this.startActivity(intent2);
             }
         }
+        timeTracker.onPauseTime = System.currentTimeMillis();
+        timeTracker.saveTime();
     }
     boolean isNormal = false;
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         isNormal = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timeTracker.onResumeTime = System.currentTimeMillis();
     }
 
     public void change(View view){
@@ -100,7 +118,7 @@ public class AchieveUnlockActivity extends AppCompatActivity {
     }
 
     private void achievementShare(String text, int imageId){
-        YandexMetrica.reportEvent("Achievement share", "young tesla");
+        Event.shareAchievement("Yong Tesla");
         Bitmap bm = BitmapFactory.decodeResource( getResources(), imageId);
         String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
 
@@ -115,7 +133,6 @@ public class AchieveUnlockActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
         emailIntent.setType("application/image");
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"array"});

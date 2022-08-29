@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat;
 
 import com.app.cense.AlarmService.AlarmService;
 import com.app.cense.data.SharedPreferences.AppPreferences;
+import com.app.cense.data.appMetrica.Event;
 import com.app.cense.power.ShutdownReceiver;
 import com.app.cense.ui.parent.TimeoutSelectActivity;
 import com.app.cense.ui.testActivity.TestActivity;
@@ -35,11 +36,13 @@ public class LockScreenActivity extends AppCompatActivity {
 
     public static LockScreenActivity lockScreenActivity;
     AppPreferences sp;
+    private TimeTracker timeTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        App.canLeave = false;
+        TestActivity.isDone = false;
 
         lockScreenActivity = this;
         setContentView(R.layout.activity_lock_screen);
@@ -58,6 +61,9 @@ public class LockScreenActivity extends AppCompatActivity {
             ContextCompat.startForegroundService(this, serviceIntent);
             System.out.println("сервис запущен");
         }
+
+        timeTracker = new TimeTracker();
+        timeTracker.classname = "lock";
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -74,6 +80,7 @@ public class LockScreenActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             App.getInstance().getFirebaseController().writePowerOff(App.getInstance().getSharedPreferences().getLogin(), "PROBABLY OFF");
+            Event.power("probably off");
             Intent intent2 = new Intent(this, FakeLauncherActivity.class);
             intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(intent2);
@@ -106,6 +113,8 @@ public class LockScreenActivity extends AppCompatActivity {
         ShutdownReceiver mReceiver = new ShutdownReceiver();
         registerReceiver(mReceiver, filter);
         isUrgently = false;
+        System.out.println("12345");
+        timeTracker.onResumeTime = System.currentTimeMillis();
     }
 
     public void change(View view) {
@@ -129,6 +138,7 @@ public class LockScreenActivity extends AppCompatActivity {
             System.out.println();
             if (App.getInstance().isMyAppLauncherDefault()) {
                 TestActivity.start(this);
+
             } else {
                 PackageManager packageManager = getPackageManager();
                 ComponentName componentName = new ComponentName(this, FakeLauncherActivity.class);
@@ -150,9 +160,10 @@ public class LockScreenActivity extends AppCompatActivity {
                     }
                 try {
                     int i = 0;
+                    isUrgently = true;
                     while (i<15) {
                         Thread.sleep(2000);
-                        if (App.getInstance().isMyAppLauncherDefault()) {
+                        if (App.getInstance().isMyAppLauncherDefault() || !isUrgently) {
                             TestActivity.start(this);
                             return;
                         }
@@ -165,6 +176,8 @@ public class LockScreenActivity extends AppCompatActivity {
             System.out.println("Here");
         }
     }
+
+
 
     boolean isUrgently = false;
     private void openUrgently() {
@@ -188,6 +201,15 @@ public class LockScreenActivity extends AppCompatActivity {
         };
         thread.start();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timeTracker.onPauseTime = System.currentTimeMillis();
+        timeTracker.saveTime();
+    }
+
+
 
     @Override
     public void onBackPressed() {

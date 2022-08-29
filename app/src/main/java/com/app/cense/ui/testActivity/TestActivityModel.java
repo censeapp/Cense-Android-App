@@ -33,7 +33,7 @@ public class TestActivityModel {
         for (QuestionModel questionModel : questionModels) {//основной цикл
             if (currentQuestion.size() < countToUnlock) {
                 if (questionModel.getClassName() == targetClass && questionModel.getSubjectName().equalsIgnoreCase(targetSubject)) {
-                    System.out.println(targetSubject);
+                    System.out.println("основной цикл"+targetSubject+" "+questionModel.toString());
                     currentQuestion.add(questionModel);
                 }
             } else {
@@ -41,12 +41,15 @@ public class TestActivityModel {
             }
         }
         if (currentQuestion.size()<countToUnlock){//резервный цикл
+
             for (QuestionModel questionModel : questionModels) {
                 if (currentQuestion.size() < countToUnlock) {
-                    if (questionModel.getClassName() == targetClass) {
-                        System.out.println(targetSubject);
-                        currentQuestion.add(questionModel);
-                    }
+                        if (questionModel.getSubjectName()!=null){
+                            if (questionModel.getSubjectName().equals(targetSubject)) {
+                                System.out.println("резервный цикл" + targetSubject);
+                                currentQuestion.add(questionModel);
+                            }
+                        }
                 } else {
                     break;
                 }

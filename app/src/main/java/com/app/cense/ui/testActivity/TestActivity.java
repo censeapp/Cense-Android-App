@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import com.app.cense.App;
 import com.app.cense.FakeLauncherActivity;
 import com.app.cense.R;
+import com.app.cense.TimeTracker;
 import com.app.cense.data.SharedPreferences.AppPreferences;
 import com.app.cense.data.appMetrica.Event;
 import com.app.cense.data.firebase.FirebaseController;
@@ -47,9 +48,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class TestActivity extends AppCompatActivity implements OnProgressListener{
+public class TestActivity extends AppCompatActivity implements OnProgressListener {
     TestActivityModel test = null;
-    private static boolean isReady = false;
+    private static boolean isReady = true;
     TextView answer;
     TextView counter;
     ProgressBar bar;
@@ -69,6 +70,7 @@ public class TestActivity extends AppCompatActivity implements OnProgressListene
     private TextView hintText;
     private String startDate;
 
+
         int trueAnswers = 0;
         int falseAnswers = 0;
         List<Long> times = new ArrayList<>();
@@ -76,29 +78,28 @@ public class TestActivity extends AppCompatActivity implements OnProgressListene
     private void saveCurrentTimeForStatistic(){
        times.add(System.currentTimeMillis());
     }
+
     private void saveStatistic(){
         StatisticHelper statisticHelper = new StatisticHelper();
-        TestData testData = new TestData(times, trueAnswers, falseAnswers);
-        Event.averageValues(startDate, testData.averageTime, testData.rightAnswers);
+        TestData testData = new TestData(startDate,times, trueAnswers, falseAnswers);
         statisticHelper.insertStatistic(testData);
         AnswerHelper answerHelper = new AnswerHelper();
         answerHelper.insertAll(answerEntities);
     }
 
+
+
     @Override
     public void onBackPressed() {
         System.out.println(isDone);
+        if (App.canLeave) isDone = true;
         if (isDone) {
-            PackageManager packageManager = getPackageManager();
-            ComponentName componentName = new ComponentName(this, FakeLauncherActivity.class);
-            packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-
-            Intent selector = new Intent(Intent.ACTION_MAIN);
-            selector.addCategory(Intent.CATEGORY_HOME);
-            selector.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(selector);
-
-            packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.DONT_KILL_APP);
+            getPackageManager().clearPackagePreferredActivities(getPackageName());
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
+            isDone = false;
         }
     }
 
@@ -238,8 +239,7 @@ public class TestActivity extends AppCompatActivity implements OnProgressListene
                     QuestionHelper questionHelper = new QuestionHelper();
                     questionHelper.rewriteTable(listData);
                     Log.e("testList", "if (test == null && listData.size() != 0)");
-                    isReady = true;
-                    test = new TestActivityModel(targetClass, targetTag, targetSubject, listData);
+                                        test = new TestActivityModel(targetClass, targetTag, targetSubject, listData);
                     Log.e("testList", targetClass +" "+ targetTag + " " + targetSubject);
                     hideLoader();
                 } else {
@@ -516,6 +516,7 @@ public class TestActivity extends AppCompatActivity implements OnProgressListene
         System.out.println("тест активити onKeyDown");
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             App.getInstance().getFirebaseController().writePowerOff(App.getInstance().getSharedPreferences().getLogin(), "PROBABLY OFF");
+            Event.power("probably off");
             Intent intent2 = new Intent(this, TestActivity.class);
             intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(intent2);
@@ -524,6 +525,8 @@ public class TestActivity extends AppCompatActivity implements OnProgressListene
     }
 
     void setView(QuestionModel model) {
+        TextView subjName = findViewById(R.id.textThemeTest);
+        subjName.setText(model.subjectName);
 
         System.out.println("setVie1w");
         TextView view = findViewById(R.id.aAnswerTextTest);
@@ -552,6 +555,22 @@ public class TestActivity extends AppCompatActivity implements OnProgressListene
         context.startActivity(intent);
     }
 
+    private void sendStatistic(){
+        if (App.hasConnection(this)){
+            AppPreferences sp = App.getInstance().getSharedPreferences();
+            FirebaseController fc = App.getInstance().getFirebaseController();
+            StatisticHelper helper = new StatisticHelper();
+            fc.insertAllStatistic(sp.getLogin(), helper.getAllStatistic());
+            Event.allAverage(helper.getAllStatistic());
+            helper.deleteAll();
+
+            AnswerHelper answerHelper = new AnswerHelper();
+
+            Event.allAnswers(answerHelper.getAll());
+            answerHelper.deleteAll();
+        }
+    }
+
     @Override
     protected void onStop() {
         System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()));
@@ -559,18 +578,7 @@ public class TestActivity extends AppCompatActivity implements OnProgressListene
         super.onStop();
         if (isDone) {
             saveStatistic();
-            if (App.hasConnection(this)){
-                AppPreferences sp = new AppPreferences(this);
-                FirebaseController fc = new FirebaseController();
-                StatisticHelper helper = new StatisticHelper();
-                fc.insertAllStatistic(sp.getLogin(), helper.getAllStatistic());
-                helper.deleteAll();
-
-               AnswerHelper answerHelper = new AnswerHelper();
-
-                Event.allAnswers(answerHelper.getAll());
-                answerHelper.deleteAll();
-            }
+            sendStatistic();
 
             /*getPackageManager().clearPackagePreferredActivities(getPackageName());
             Intent startMain = new Intent(Intent.ACTION_MAIN);

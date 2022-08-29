@@ -2,9 +2,11 @@ package com.app.cense.data.SharedPreferences
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.ArraySet
 
-class AppPreferences(val context: Context, ) { var sharedPreferences: SharedPreferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
+import com.app.cense.data.appMetrica.Event
+
+class AppPreferences(val context: Context) {
+    var sharedPreferences: SharedPreferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
     var ed: SharedPreferences.Editor = sharedPreferences.edit()
     fun getProperty(key: String?, defValue: String?): String? {
         return sharedPreferences.getString(key, defValue)
@@ -24,12 +26,22 @@ class AppPreferences(val context: Context, ) { var sharedPreferences: SharedPref
         return sharedPreferences.getInt("countTrueAnswers", 0)
     }//вернуть количество правильных ответов подряд
     fun isAchievementUnlocked(text: String): Boolean{//сохранить запись о том, что достижение уже было получено
-        val res = sharedPreferences.getBoolean(text, false)
-        if (!res){
+
+        if (!sharedPreferences.getBoolean(text, false)){
             ed.putBoolean(text, true)
             ed.commit()
             return false
         }; return true
+    }
+
+    fun AchievementSendedToMetrica(text: String){
+        if (!sharedPreferences.getBoolean(text, false)) {
+            if (!sharedPreferences.getBoolean("if" + text, false)) {
+                Event.awardedAchievement(text);
+                ed.putBoolean("if" + text, true);
+                ed.commit();
+            }
+        }
     }
     fun saveLogin(login: String?) {//сохранить логин
         ed.putString("login", login)
@@ -59,15 +71,24 @@ class AppPreferences(val context: Context, ) { var sharedPreferences: SharedPref
         }
         return set
     }
+    fun deleteAllTryPurchase(){
+        val count = sharedPreferences.getInt("countTryPurchase", 0)
+        val set = HashSet<String>(count)
+        for (i in 1..count){
+            ed.remove("tryPurchase${i}")
+        }
+        ed.putInt("countTryPurchase", 0);
+    }
 
-    fun savePurchaseStatus(buy: String){
+    fun savePurchaseStatusTrue(buy: String){
         ed.putBoolean(buy, true)
         ed.commit()
     }
 
-    fun getPurchaseStatus(buy: String){
-        sharedPreferences.getBoolean(buy, false)
+    fun getPurchaseStatus(buy: String): Boolean{
+        return sharedPreferences.getBoolean(buy, false)
     }
+
 
 
 }

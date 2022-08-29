@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.room.Room;
 
 import com.app.cense.data.SharedPreferences.AppPreferences;
+import com.app.cense.data.SharedPreferences.TimeTrakcingPreferences;
 import com.app.cense.data.firebase.FirebaseController;
 import com.app.cense.data.room.AppDatabase;
 import com.app.cense.data.room.question.QuestionHelper;
@@ -40,10 +41,16 @@ import java.util.List;
 
 public class App extends Application {
     public static App instance;
+    final public static String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
     private AppDatabase database;
     private AppPreferences appPreferences;
+    private TimeTrakcingPreferences ttp;
     private static FirebaseController firebaseController;
     private boolean firstLaunch = false;
+    public static String three_d_secure_url = "https://www.google.com/";
+    public static String purchaseTry = "";
+
+    public static boolean canLeave = false;
     @Override
     public void onCreate(){
         super.onCreate();
@@ -52,7 +59,7 @@ public class App extends Application {
         database = Room.databaseBuilder(this, AppDatabase.class, "database").build();
         firebaseController = new FirebaseController();
         appPreferences = new AppPreferences(this);
-
+        ttp = new TimeTrakcingPreferences(this);
 
         new FlurryAgent.Builder()
                 .withLogEnabled(true)
@@ -67,6 +74,9 @@ public class App extends Application {
         YandexMetrica.activate(getApplicationContext(), config);
         // Automatic tracking of user activity.
         YandexMetrica.enableActivityAutoTracking(this);
+
+        TimeTracker.sendTime();
+        App.getInstance().getSharedPreferences().AchievementSendedToMetrica("Yong Tesla");
     }
     public boolean isFirstLaunch(){
         QuestionHelper qh = new QuestionHelper();
@@ -91,6 +101,8 @@ public class App extends Application {
         return database;
     }
 
+    public TimeTrakcingPreferences getTtp() { return ttp; };
+
     @SuppressLint("MissingPermission")
     public static boolean hasConnection(final Context context)
     {
@@ -112,7 +124,6 @@ public class App extends Application {
         }
         return false;
     }
-
 
 
 
@@ -160,6 +171,7 @@ public class App extends Application {
         for (ComponentName activity : activities) {
 
             if ("com.app.cense".equals(activity.getPackageName())) {
+                System.out.println("1234"+activity.getPackageName());
                 has = true;
             }
         }

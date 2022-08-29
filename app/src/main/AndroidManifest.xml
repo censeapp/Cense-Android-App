@@ -53,7 +53,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.parent.TimeoutSelectActivity" />
+
+        <activity
+
+            android:name=".ui.parent.TimeoutSelectActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
         <activity
             android:name=".LockScreenActivity"
             android:exported="true">
